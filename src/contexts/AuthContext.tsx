@@ -20,44 +20,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Automatically assign PATIENT role for fresh signups
-  const assignDefaultPatientRole = async (userId: string) => {
-    await supabase.from('user_roles').insert({
-      user_id: userId,
-      role: 'patient'
-    });
-  };
-
-  // Load the role from the DB
-  const fetchUserRole = async (userId: string) => {
-    const { data, error } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId)
-      .single();
-
-    // If no role exists → this is a new user → assign patient
-    if (!data || error) {
-      console.log("No role found. Assigning default 'patient' role.");
-      await assignDefaultPatientRole(userId);
-
-      setUserRole('patient');
-      setLoading(false);
-      return;
-    }
-
-    setUserRole(data.role as UserRole);
-    setLoading(false);
-  };
-
   useEffect(() => {
+    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-
+        
         if (session?.user) {
-          await fetchUserRole(session.user.id);
+          setTimeout(() => {
+            fetchUserRole(session.user.id);
+          }, 0);
         } else {
           setUserRole(null);
           setLoading(false);
@@ -65,13 +38,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
-    // Load session on initial mount
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-
+      
       if (session?.user) {
-        await fetchUserRole(session.user.id);
+        fetchUserRole(session.user.id);
       } else {
         setLoading(false);
       }
@@ -79,6 +52,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const fetchUserRole = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching user role:', error);
+        setUserRole(null);
+      } else {
+        setUserRole(data.role as UserRole);
+      }
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+      setUserRole(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const signOut = async () => {
     await supabase.auth.signOut();
