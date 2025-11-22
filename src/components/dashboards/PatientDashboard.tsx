@@ -32,7 +32,7 @@ const PatientDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-primary">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-primary" onClick={() => navigate('/book-appointment')}>
             <CardHeader>
               <Calendar className="w-12 h-12 text-primary mb-4" />
               <CardTitle>Book Appointment</CardTitle>
@@ -45,7 +45,7 @@ const PatientDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-secondary">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-secondary" onClick={() => navigate('/medicine-shop')}>
             <CardHeader>
               <Pill className="w-12 h-12 text-secondary mb-4" />
               <CardTitle>Buy Medicine</CardTitle>
@@ -58,7 +58,7 @@ const PatientDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-accent-foreground">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-accent-foreground" onClick={() => navigate('/medicine-reminders')}>
             <CardHeader>
               <Clock className="w-12 h-12 text-accent-foreground mb-4" />
               <CardTitle>Medicine Reminders</CardTitle>

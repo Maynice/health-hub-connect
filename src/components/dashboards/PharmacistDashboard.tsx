@@ -32,28 +32,28 @@ const PharmacistDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-primary">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-primary" onClick={() => navigate('/pharmacy-inventory')}>
             <CardHeader>
-              <Pill className="w-12 h-12 text-primary mb-4" />
-              <CardTitle>Medicine Catalog</CardTitle>
-              <CardDescription>Manage available medicines</CardDescription>
+              <Package className="w-12 h-12 text-primary mb-4" />
+              <CardTitle>Medicine Inventory</CardTitle>
+              <CardDescription>Manage medicine stock and catalog</CardDescription>
             </CardHeader>
             <CardContent>
               <Button className="w-full bg-gradient-to-r from-primary to-secondary">
-                View Catalog
+                Manage Inventory
               </Button>
             </CardContent>
           </Card>
 
           <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-secondary">
             <CardHeader>
-              <Package className="w-12 h-12 text-secondary mb-4" />
-              <CardTitle>Inventory</CardTitle>
-              <CardDescription>Track stock levels and restocking</CardDescription>
+              <Pill className="w-12 h-12 text-secondary mb-4" />
+              <CardTitle>Medicine Catalog</CardTitle>
+              <CardDescription>View available medicines</CardDescription>
             </CardHeader>
             <CardContent>
               <Button className="w-full bg-gradient-to-r from-secondary to-primary">
-                Manage Stock
+                View Catalog
               </Button>
             </CardContent>
           </Card>

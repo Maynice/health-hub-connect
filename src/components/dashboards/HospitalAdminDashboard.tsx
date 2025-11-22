@@ -32,7 +32,7 @@ const HospitalAdminDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-primary">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-primary" onClick={() => navigate('/manage-users')}>
             <CardHeader>
               <Users className="w-12 h-12 text-primary mb-4" />
               <CardTitle>User Management</CardTitle>
