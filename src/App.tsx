@@ -8,6 +8,13 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import BookAppointment from "./pages/BookAppointment";
+import MedicineShop from "./pages/MedicineShop";
+import MedicineReminders from "./pages/MedicineReminders";
+import DoctorAppointments from "./pages/DoctorAppointments";
+import PatientRecords from "./pages/PatientRecords";
+import ManageUsers from "./pages/ManageUsers";
+import PharmacyInventory from "./pages/PharmacyInventory";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +29,13 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/book-appointment" element={<BookAppointment />} />
+            <Route path="/medicine-shop" element={<MedicineShop />} />
+            <Route path="/medicine-reminders" element={<MedicineReminders />} />
+            <Route path="/doctor-appointments" element={<DoctorAppointments />} />
+            <Route path="/patient-records" element={<PatientRecords />} />
+            <Route path="/manage-users" element={<ManageUsers />} />
+            <Route path="/pharmacy-inventory" element={<PharmacyInventory />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

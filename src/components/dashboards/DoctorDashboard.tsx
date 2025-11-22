@@ -32,28 +32,28 @@ const DoctorDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-primary">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-primary" onClick={() => navigate('/doctor-appointments')}>
             <CardHeader>
               <Calendar className="w-12 h-12 text-primary mb-4" />
               <CardTitle>My Appointments</CardTitle>
-              <CardDescription>View and manage scheduled appointments</CardDescription>
+              <CardDescription>View and manage patient appointments</CardDescription>
             </CardHeader>
             <CardContent>
               <Button className="w-full bg-gradient-to-r from-primary to-secondary">
-                View Schedule
+                View Appointments
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-secondary">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-secondary" onClick={() => navigate('/patient-records')}>
             <CardHeader>
-              <Users className="w-12 h-12 text-secondary mb-4" />
+              <FileText className="w-12 h-12 text-secondary mb-4" />
               <CardTitle>Patient Records</CardTitle>
-              <CardDescription>Access patient medical history</CardDescription>
+              <CardDescription>Access and update patient health records</CardDescription>
             </CardHeader>
             <CardContent>
               <Button className="w-full bg-gradient-to-r from-secondary to-primary">
-                View Patients
+                View Records
               </Button>
             </CardContent>
           </Card>
