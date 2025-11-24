@@ -45,7 +45,7 @@ const PharmacistDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-secondary">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-secondary">
             <CardHeader>
               <Pill className="w-12 h-12 text-secondary mb-4" />
               <CardTitle>Medicine Catalog</CardTitle>
@@ -58,7 +58,7 @@ const PharmacistDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-accent-foreground">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-accent-foreground">
             <CardHeader>
               <ShoppingCart className="w-12 h-12 text-accent-foreground mb-4" />
               <CardTitle>Purchase Orders</CardTitle>
@@ -68,26 +68,6 @@ const PharmacistDashboard = () => {
               <Button className="w-full" variant="outline">
                 View Orders
               </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Orders</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">No recent orders</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Low Stock Alert</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">All medicines in stock</p>
             </CardContent>
           </Card>
         </div>
