@@ -23,7 +23,21 @@ const MedicineReminders = () => {
   const [frequency, setFrequency] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [reminderTime, setReminderTime] = useState('');
+  const [reminderTimes, setReminderTimes] = useState<string[]>(['']);
+
+  const getTimeSlotsCount = (freq: string) => {
+    switch (freq) {
+      case 'twice_daily': return 2;
+      case 'three_times_daily': return 3;
+      default: return 1;
+    }
+  };
+
+  const updateReminderTimes = (newFrequency: string) => {
+    const count = getTimeSlotsCount(newFrequency);
+    const newTimes = Array(count).fill('').map((_, i) => reminderTimes[i] || '');
+    setReminderTimes(newTimes);
+  };
 
   const { data: medicines } = useQuery({
     queryKey: ['available-medicines'],
@@ -47,8 +61,13 @@ const MedicineReminders = () => {
 
   const createReminder = useMutation({
     mutationFn: async () => {
-      if (!selectedMedicine || !dosage || !frequency || !startDate || !reminderTime) {
+      if (!selectedMedicine || !dosage || !frequency || !startDate) {
         throw new Error('Please fill all required fields');
+      }
+
+      const validTimes = reminderTimes.filter(t => t.trim() !== '');
+      if (validTimes.length === 0) {
+        throw new Error('Please add at least one reminder time');
       }
 
       const { error } = await supabase.from('medicine_reminders').insert({
@@ -58,7 +77,7 @@ const MedicineReminders = () => {
         frequency,
         start_date: startDate,
         end_date: endDate || null,
-        reminder_times: [reminderTime],
+        reminder_times: validTimes,
       });
 
       if (error) throw error;
@@ -91,7 +110,7 @@ const MedicineReminders = () => {
     setFrequency('');
     setStartDate('');
     setEndDate('');
-    setReminderTime('');
+    setReminderTimes(['']);
   };
 
   return (
@@ -135,7 +154,7 @@ const MedicineReminders = () => {
                 </div>
                 <div className="space-y-2">
                   <Label>Frequency</Label>
-                  <Select value={frequency} onValueChange={setFrequency}>
+                  <Select value={frequency} onValueChange={(val) => { setFrequency(val); updateReminderTimes(val); }}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select frequency" />
                     </SelectTrigger>
@@ -155,8 +174,21 @@ const MedicineReminders = () => {
                   <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Reminder Time</Label>
-                  <Input type="time" value={reminderTime} onChange={(e) => setReminderTime(e.target.value)} />
+                  <Label>Reminder Times</Label>
+                  {reminderTimes.map((time, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <Input 
+                        type="time" 
+                        value={time} 
+                        onChange={(e) => {
+                          const newTimes = [...reminderTimes];
+                          newTimes[idx] = e.target.value;
+                          setReminderTimes(newTimes);
+                        }} 
+                        placeholder={`Time ${idx + 1}`}
+                      />
+                    </div>
+                  ))}
                 </div>
                 <Button onClick={() => createReminder.mutate()} disabled={createReminder.isPending} className="w-full">
                   {createReminder.isPending ? 'Creating...' : 'Create Reminder'}

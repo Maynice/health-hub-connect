@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { ArrowLeft } from 'lucide-react';
 
@@ -36,14 +37,38 @@ const BookAppointment = () => {
         .select('*')
         .in('id', doctorIds);
       
-      return profiles || [];
+      const { data: availability } = await supabase
+        .from('doctor_availability')
+        .select('*')
+        .in('doctor_id', doctorIds);
+      
+      return profiles?.map(profile => ({
+        ...profile,
+        availability: availability?.find(a => a.doctor_id === profile.id)?.availability_type || 'all'
+      })) || [];
     },
   });
+
+  const selectedDoctorData = doctors?.find(d => d.id === selectedDoctor);
+
+  const isDoctorAvailable = (date: Date, doctorAvailability: string) => {
+    if (doctorAvailability === 'all') return true;
+    const dayOfWeek = date.getDay();
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    
+    if (doctorAvailability === 'weekdays') return !isWeekend;
+    if (doctorAvailability === 'weekends') return isWeekend;
+    return true;
+  };
 
   const createAppointment = useMutation({
     mutationFn: async () => {
       if (!selectedDoctor || !selectedDate || !reason.trim()) {
         throw new Error('Please fill all fields');
+      }
+
+      if (!isDoctorAvailable(selectedDate, selectedDoctorData?.availability || 'all')) {
+        throw new Error('Doctor is not available on this day');
       }
 
       const { error } = await supabase.from('appointments').insert({
@@ -96,7 +121,14 @@ const BookAppointment = () => {
                   ) : doctors?.length ? (
                     doctors.map((doctor) => (
                       <SelectItem key={doctor.id} value={doctor.id}>
-                        Dr. {doctor.full_name}
+                        <div className="flex items-center gap-2">
+                          Dr. {doctor.full_name}
+                          {doctor.availability !== 'all' && (
+                            <Badge variant="outline" className="text-xs">
+                              {doctor.availability}
+                            </Badge>
+                          )}
+                        </div>
                       </SelectItem>
                     ))
                   ) : (
@@ -104,6 +136,11 @@ const BookAppointment = () => {
                   )}
                 </SelectContent>
               </Select>
+              {selectedDoctorData && selectedDoctorData.availability !== 'all' && (
+                <p className="text-sm text-muted-foreground">
+                  This doctor is only available on {selectedDoctorData.availability}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -112,7 +149,11 @@ const BookAppointment = () => {
                 mode="single"
                 selected={selectedDate}
                 onSelect={setSelectedDate}
-                disabled={(date) => date < new Date()}
+                disabled={(date) => {
+                  if (date < new Date()) return true;
+                  if (!selectedDoctorData) return false;
+                  return !isDoctorAvailable(date, selectedDoctorData.availability);
+                }}
                 className="rounded-md border"
               />
             </div>

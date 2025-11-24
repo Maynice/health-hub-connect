@@ -58,7 +58,7 @@ const DoctorDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-accent-foreground">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-accent-foreground" onClick={() => navigate('/prescriptions')}>
             <CardHeader>
               <FileText className="w-12 h-12 text-accent-foreground mb-4" />
               <CardTitle>Prescriptions</CardTitle>

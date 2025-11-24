@@ -45,7 +45,7 @@ const HospitalAdminDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-secondary">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-secondary" onClick={() => navigate('/hospital-resources')}>
             <CardHeader>
               <Building2 className="w-12 h-12 text-secondary mb-4" />
               <CardTitle>Hospital Resources</CardTitle>
@@ -58,7 +58,7 @@ const HospitalAdminDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-card transition-shadow border-2 border-transparent hover:border-accent-foreground">
+          <Card className="hover:shadow-card transition-shadow cursor-pointer border-2 border-transparent hover:border-accent-foreground" onClick={() => navigate('/analytics')}>
             <CardHeader>
               <Activity className="w-12 h-12 text-accent-foreground mb-4" />
               <CardTitle>Analytics</CardTitle>
@@ -72,16 +72,7 @@ const HospitalAdminDashboard = () => {
           </Card>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Appointments</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">No recent appointments</p>
-            </CardContent>
-          </Card>
-
+        <div className="mt-8">
           <Card>
             <CardHeader>
               <CardTitle>System Status</CardTitle>
