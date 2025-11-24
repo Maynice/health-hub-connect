@@ -71,6 +71,27 @@ export type Database = {
         }
         Relationships: []
       }
+      doctor_availability: {
+        Row: {
+          availability_type: string
+          created_at: string | null
+          doctor_id: string
+          id: string
+        }
+        Insert: {
+          availability_type: string
+          created_at?: string | null
+          doctor_id: string
+          id?: string
+        }
+        Update: {
+          availability_type?: string
+          created_at?: string | null
+          doctor_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
       medicine_purchases: {
         Row: {
           id: string
