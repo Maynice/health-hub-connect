@@ -1,3 +1,5 @@
+This site is up and running! Visit it at bluecare.site
+
 Have Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
 Follow these steps:
